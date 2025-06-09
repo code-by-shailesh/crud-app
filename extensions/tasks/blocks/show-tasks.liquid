@@ -1,0 +1,75 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f6f8fa;
+    margin: 0;
+    padding: 2rem;
+  }
+  .task-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .task {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  .task-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .task-description {
+    color: #555;
+    margin-bottom: 8px;
+  }
+  .task-date {
+    font-size: 0.9rem;
+    color: #999;
+  }
+</style>
+<h1>Tasks List</h1>
+<div class="task-container" id="taskList">
+  <!-- Tasks will be loaded here -->
+</div>
+
+<script>
+  async function fetchTasks() {
+    try {
+      const response = await fetch('/apps/api/tasks');
+      const tasks = await response.json();
+      console.log(tasks);
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = ''; // Clear old tasks
+
+      tasks.data.forEach((task) => {
+        const taskElement = document.createElement('div');
+        taskElement.className = 'task';
+
+        taskElement.innerHTML = `
+            <div class="task-title">${task.task}</div>
+            <div class="task-description">${task.description.replace(/\n/g, '<br>')}</div>
+            <div class="task-date">Created at: ${new Date(task.createdAt).toLocaleString()}</div>
+          `;
+
+        taskList.appendChild(taskElement);
+      });
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      document.getElementById('taskList').innerHTML = '<p>Failed to load tasks.</p>';
+    }
+  }
+
+  // Load tasks on page load
+  window.addEventListener('DOMContentLoaded', fetchTasks);
+</script>
+{% schema %}
+{
+  "name": "Task List",
+  "target": "section",
+  "settings": []
+}
+{% endschema %}

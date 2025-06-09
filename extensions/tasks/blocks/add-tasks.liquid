@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="{{ 'style.css' | asset_url }}">
+
+<div class="container">
+  <h1>Task Manager</h1>
+
+  <form method="post" action="/apps/api/tasks" id="taskForm" class="task-form">
+    <div class="form-group">
+      <label for="taskTitle">Task Title</label>
+      <input type="text" id="taskTitle" name="task" placeholder="Enter task title" required>
+    </div>
+
+    <div class="form-group">
+      <label for="taskDescription">Description</label>
+      <textarea id="taskDescription" name="description" placeholder="Enter task description"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Add Task</button>
+  </form>
+
+  <div id="taskList" class="task-list">
+    <h2>Your Tasks</h2>
+    <ul id="tasks"></ul>
+  </div>
+</div>
+
+<script src="{{ 'script.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Tasks From Tasks",
+  "target": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "product", "autofill": true },
+    { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }
+  ]
+}
+{% endschema %}

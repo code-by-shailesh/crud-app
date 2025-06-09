@@ -1,0 +1,76 @@
+{% if template == 'product' %}
+  {% if section.settings.enable_tracking %}
+    <div id="view-tracker-message" style="display: none; color: green; margin-bottom: 10px;"></div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const productId = "{{ product.id }}";
+        const viewedKey = `viewed_product_${productId}`;
+        const now = Date.now();
+        const lastViewed = localStorage.getItem(viewedKey);
+        const viewDelay = {{ section.settings.view_delay_seconds | default: 15 }} * 1000; // in ms
+        const blockMinutes = {{ section.settings.block_minutes | default: 30 }} * 60 * 1000; // in ms
+
+        if (!lastViewed || now - parseInt(lastViewed) > blockMinutes) {
+          const messageBox = document.getElementById("view-tracker-message");
+
+          // Optional: Show loading or tracking message
+          messageBox.style.display = "block";
+          messageBox.style.color = "orange";
+          messageBox.innerText = "Tracking this view...";
+
+          setTimeout(() => {
+            fetch("/apps/api/product", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                shopifyProductId: productId,
+              }),
+            })
+            .then((response) => {
+              if (response.ok) {
+                localStorage.setItem(viewedKey, Date.now().toString());
+                messageBox.style.color = "green";
+                messageBox.innerText = "✅ Product view tracked successfully!";
+              } else {
+                throw new Error("Failed to track view.");
+              }
+            })
+            .catch((error) => {
+              console.error("View tracking failed:", error);
+              messageBox.style.color = "red";
+              messageBox.innerText = "❌ Failed to track view.";
+            });
+          }, viewDelay);
+        }
+      });
+    </script>
+  {% endif %}
+{% endif %}
+{% schema %}
+{
+  "name": "View Tracker",
+  "target": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_tracking",
+      "label": "Enable View Tracking",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "view_delay_seconds",
+      "label": "Delay Before Tracking (seconds)",
+      "default": 15
+    },
+    {
+      "type": "number",
+      "id": "block_minutes",
+      "label": "Block Re-Tracking Duration (minutes)",
+      "default": 30
+    }
+  ]
+}
+{% endschema %}

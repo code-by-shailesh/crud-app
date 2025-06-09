@@ -1,0 +1,33 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "7f18e3ac329905bb6b3d97be183e51c5"
+name = "crud-app"
+handle = "crud-app-21"
+application_url = "https://partial-garlic-highs-inexpensive.trycloudflare.com/"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2025-04"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products,read_products"
+
+[auth]
+redirect_urls = [
+  "https://partial-garlic-highs-inexpensive.trycloudflare.com/auth/callback",
+  "https://partial-garlic-highs-inexpensive.trycloudflare.com/auth/shopify/callback",
+  "https://partial-garlic-highs-inexpensive.trycloudflare.com/api/auth/callback"
+]
+
+[app_proxy]
+url = "https://partial-garlic-highs-inexpensive.trycloudflare.com/api/"
+subpath = "api"
+prefix = "apps"
+
+[pos]
+embedded = false
