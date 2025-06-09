@@ -3,7 +3,7 @@
 client_id = "7f18e3ac329905bb6b3d97be183e51c5"
 name = "crud-app"
 handle = "crud-app-21"
-application_url = "https://partial-garlic-highs-inexpensive.trycloudflare.com/"
+application_url = "https://crud-app-ya3h.onrender.com"
 embedded = true
 
 [build]
@@ -19,13 +19,13 @@ scopes = "write_products,read_products"
 
 [auth]
 redirect_urls = [
-  "https://partial-garlic-highs-inexpensive.trycloudflare.com/auth/callback",
-  "https://partial-garlic-highs-inexpensive.trycloudflare.com/auth/shopify/callback",
-  "https://partial-garlic-highs-inexpensive.trycloudflare.com/api/auth/callback"
+  "https://crud-app-ya3h.onrender.com/auth/callback",
+  "https://crud-app-ya3h.onrender.com/auth/shopify/callback",
+  "https://crud-app-ya3h.onrender.com/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://partial-garlic-highs-inexpensive.trycloudflare.com/api/"
+url = "https://crud-app-ya3h.onrender.com/api"
 subpath = "api"
 prefix = "apps"
 
